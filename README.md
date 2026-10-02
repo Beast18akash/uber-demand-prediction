@@ -8,12 +8,12 @@ Uber pickup demand changes across time. Temporal factors such as hour, day, day 
 The main objective is to study historical Uber pickup behavior using descriptive statistics and correlation analysis, then prepare a simple machine learning dataset and predict aggregated pickup demand with a Random Forest Regressor.
 
 ## Dataset
-This project uses the existing Uber NYC dataset in the data folder:
-- File used: data/uber-raw-data-jul14.csv
-- Source: Uber NYC trip records for July 2014
-- Raw records: 796,121
+This project uses the Uber NYC monthly CSV datasets in the data folder:
+- Files used: uber-raw-data-apr14.csv, uber-raw-data-jun14.csv, uber-raw-data-jul14.csv, uber-raw-data-aug14.csv, and uber-raw-data-sep14.csv
+- Source: Uber NYC trip records from April through September 2014
+- Raw records: 3,881,892
 - Variables: 4
-- Date range: 2014-07-01 to 2014-07-31
+- Date range: 2014-04-01 to 2014-09-30
 - Columns: Date/Time, Lat, Lon, Base
 - Important attributes: Date/Time, Lat, Lon, Base
 
@@ -48,7 +48,7 @@ The preprocessing steps include:
 - Removing duplicate rows
 - Validating the final dataset structure
 
-The final cleaned dataset contains 781,969 records after duplicate removal.
+The final cleaned dataset contains 3,809,386 records after removing 72,506 duplicates. The raw files contain no missing values in the four original columns.
 
 ## Exploratory Data Analysis
 The project visualizes:
@@ -64,15 +64,15 @@ These plots help identify busy hours, weekly patterns, and time-based demand var
 Descriptive statistics were computed on the aggregated demand dataset.
 
 Pickup_Count summary statistics:
-- Mean: 1051.03
-- Median: 1025.00
-- Standard deviation: 616.85
-- Minimum: 63.00
-- Maximum: 3227.00
-- 25th percentile: 547.00
-- 75th percentile: 1443.50
+- Mean: 1044.53
+- Median: 1003.00
+- Standard deviation: 641.21
+- Minimum: 45.00
+- Maximum: 3347.00
+- 25th percentile: 517.00
+- 75th percentile: 1450.00
 
-The correlation matrix shows a strong positive relationship between Hour and Pickup_Count (0.670), while Day and DayOfWeek show weaker relationships.
+The correlation matrix shows a positive relationship between Hour and Pickup_Count (0.630). Day (0.048) and DayOfWeek (-0.020) have weaker correlations. Correlation does not demonstrate causation.
 
 ## Machine Learning Model
 The project uses a single main model:
@@ -92,15 +92,15 @@ Random Forest Regression is suitable because the target is numerical and the mod
 
 ## Evaluation Metrics
 The model was evaluated on the test set using:
-- MAE: 79.88
-- MSE: 17387.34
-- RMSE: 131.86
-- R²: 0.9499
+- MAE: 84.06
+- MSE: 16528.62
+- RMSE: 128.56
+- R²: 0.9607
 
 ## Results
-The model captures the main demand pattern well and explains about 95% of the variation in the test set.
+The model explains about 96% of the variation in the test set. These results are specific to the current dataset and random train-test split.
 
-The most important feature in prediction was Hour, followed by Day and DayOfWeek. Month was not informative in this dataset because the data covers only July 2014.
+The most important feature was Hour, followed by DayOfWeek, Month, and Day. Feature importance describes how the model used these inputs; it does not imply causation.
 
 ## Ethical Considerations
 - Privacy: location-based transportation data should be handled responsibly.
@@ -110,7 +110,7 @@ The most important feature in prediction was Hour, followed by Day and DayOfWeek
 - Responsible use: this model is intended for analysis and planning, not blind decision-making.
 
 ## Limitations
-- The dataset is historical and limited to July 2014.
+- The dataset is historical and covers selected months from April through September 2014.
 - There are no weather or traffic variables.
 - Holidays, events, and surge pricing are not included.
 - Only a small set of temporal features is used.
@@ -144,7 +144,11 @@ Possible improvements include:
 ```text
 uber_data_analysis/
 ├── data/
-│   └── uber-raw-data-jul14.csv
+│   ├── uber-raw-data-apr14.csv
+│   ├── uber-raw-data-jun14.csv
+│   ├── uber-raw-data-jul14.csv
+│   ├── uber-raw-data-aug14.csv
+│   └── uber-raw-data-sep14.csv
 ├── notebook/
 │   └── uber_data_analysis.ipynb
 ├── output/
